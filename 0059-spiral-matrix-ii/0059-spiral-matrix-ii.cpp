@@ -1,33 +1,39 @@
 class Solution {
 public:
     vector<vector<int>> generateMatrix(int n) {
-        if (n == 0) {
-            return {};
-        }
+        
         vector<vector<int>> matrix(n, vector<int>(n, 0));
-        int left = 0, right = n-1, top = 0, bottom = n-1, num = 1;
-        while (left <= right && top <= bottom) {
-            for (int i = left; i <= right; i++) {
-                matrix[top][i] = num++;
-            }
-            top++;
-            for (int i = top; i <= bottom; i++) {
-                matrix[i][right] = num++;
-            }
-            right--;
-            if (top <= bottom) {
-                for (int i = right; i >= left; i--) {
-                    matrix[bottom][i] = num++;
-                }
-                bottom--;
-            }
-            if (left <= right) {
-                for (int i = bottom; i >= top; i--) {
-                    matrix[i][left] = num++;
-                }
-                left++;
-            }
+        int sc, sr = 0;
+        int er = n-1;
+        int ec = n-1;
+
+        int val = 1;
+
+        while(sr <= er && sc <= ec){
+
+          //traversing right to left
+          for(int i = sc; i<=ec; i++){
+            matrix[sr][i] = val;
+            val++;
+          }
+          sr++;
+          for(int i = sr; i<= er; i++){
+            matrix[i][ec] = val;
+            val++;
+          }
+          ec--;
+          for(int i = ec; i >= sc &&  sr<=er; i--){
+                matrix[er][i] = val;
+                val++;
+          }
+          er--;
+          for(int i = er; i >= sr && sc<=ec; i--){
+              matrix[i][sc] = val;
+              val++;
+          }
+          sc++;
         }
+
         return matrix;
     }
 };
