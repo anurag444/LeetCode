@@ -20,7 +20,7 @@ class Solution {
         //base case
         if(root == null) return res;
 
-        Queue<TreeNode> q = new ArrayDeque<>();
+        Queue<TreeNode> q = new LinkedList<>();
 
         q.add(root);
 
