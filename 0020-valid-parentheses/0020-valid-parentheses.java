@@ -4,7 +4,8 @@ class Solution {
 
         if(s.charAt(0) == ')' || s.charAt(0) == ']' || s.charAt(0) == '}') return false;
 
-        for(char c : s.toCharArray()){
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
             if(c == '(' || c == '[' || c == '{'){
                 stack.push(c);
             }else{
