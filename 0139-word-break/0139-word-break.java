@@ -21,4 +21,7 @@ class Solution {
         }
         return dp[n];
     }
+    
+    
+    //We can do same approach by starting from end and repeatin gt he same process
 }
