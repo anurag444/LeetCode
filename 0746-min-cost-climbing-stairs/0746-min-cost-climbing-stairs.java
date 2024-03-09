@@ -6,10 +6,15 @@ class Solution {
         dp[0] = cost[0];
         dp[1] = cost[1];
         
+        int curr = dp[1];
+        int prev = dp[0];
+        
         for(int i = 2; i < n; i++){
-            dp[i] = Math.min(cost[i] + dp[i - 2], dp[i - 1] + cost[i]);
+            dp[i] = Math.min(cost[i] + prev, curr + cost[i]);
+            prev = curr;
+            curr = dp[i];
         }
         
-        return Math.min(dp[n - 1], dp[n - 2]);
+        return Math.min(prev, curr);
     }
 }
