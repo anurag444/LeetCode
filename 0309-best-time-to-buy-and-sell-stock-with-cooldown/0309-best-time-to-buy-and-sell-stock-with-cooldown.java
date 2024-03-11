@@ -12,21 +12,17 @@ class Solution {
         
         
         for(int index = n - 1; index >= 0; index--){
-            int profit = 0;
-            for(int buy = 0; buy <=1; buy++){
-                if(buy == 1){
-                    profit = Math.max(-prices[index] + dp[index + 1][0],
+            
+                    dp[index][1] = Math.max(-prices[index] + dp[index + 1][0],
                              0 + dp[index + 1][1]);
-                }
-                else{
-                    profit = Math.max(prices[index] + dp[index + 2][1],
-                             0 + dp[index + 1][0]);
-                }
                 
-                dp[index][buy] = profit;
+                
+                    dp[index][0] = Math.max(prices[index] + dp[index + 2][1],
+                             0 + dp[index + 1][0]);
+                
+                
             }
             
-        }
         
         
         return dp[0][1];
