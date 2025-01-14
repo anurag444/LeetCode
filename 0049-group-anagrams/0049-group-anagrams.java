@@ -1,29 +1,54 @@
 class Solution {
-    public String getSignature(String s) {
-        int[] count = new int[26];
-        for (char c : s.toCharArray()) {
-            count[c - 'a']++;
+    public List<List<String>> groupAnagrams(String[] strs) {
+        
+        int n = strs.length;
+
+        List<List<String>> res = new ArrayList<>();
+
+        for(int i = 0; i < n - 1; i++){
+            String s1 = strs[i];
+            if(s1 == "NA") continue;
+            List<String> temp = new ArrayList<>();
+            temp.add(s1);
+            for(int j = i + 1; j < n; j++){
+                
+                String s2 = strs[j];
+
+                if(s2 != "NA" && checkAnagram(s1, s2)){
+                    temp.add(s2);
+                    strs[j] = "NA";
+                } 
+            }
+
+            res.add(temp);
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 26; i++) {
-            if (count[i] != 0) {
-                sb.append((char) ('a' + i)).append(count[i]);
-            }
+        if(strs[n - 1] != "NA"){
+            res.add(new ArrayList<>(Arrays.asList(strs[n - 1])));
         }
-        return sb.toString();
+
+        return res;
+
+
     }
 
-    public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> result = new ArrayList<>();
-        Map<String, List<String>> groups = new HashMap<>();
+    public boolean checkAnagram(String s1, String s2){
+        if(s1.length() != s2.length()) return false;
 
-        for (String s : strs) {
-            groups.computeIfAbsent(getSignature(s), k -> new ArrayList<>()).add(s);
+        int[] words = new int[26];
+
+        for(char c : s1.toCharArray()){
+            words[c - 'a']++;
         }
 
-        result.addAll(groups.values());
+        for(char c : s2.toCharArray()){
+            words[c - 'a']--;
+        }
 
-        return result;
+        for(int i = 0; i < 26; i++){
+            if(words[i] != 0) return false;
+        }
+
+        return true;
     }
 }
