@@ -1,54 +1,29 @@
 class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        
-        int n = strs.length;
+    public String getSignature(String s) {
+        int[] count = new int[26];
+        for (char c : s.toCharArray()) {
+            count[c - 'a']++;
+        }
 
-        List<List<String>> res = new ArrayList<>();
-
-        for(int i = 0; i < n - 1; i++){
-            String s1 = strs[i];
-            if(s1 == "NA") continue;
-            List<String> temp = new ArrayList<>();
-            temp.add(s1);
-            for(int j = i + 1; j < n; j++){
-                
-                String s2 = strs[j];
-
-                if(s2 != "NA" && checkAnagram(s1, s2)){
-                    temp.add(s2);
-                    strs[j] = "NA";
-                } 
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 26; i++) {
+            if (count[i] != 0) {
+                sb.append((char) ('a' + i)).append(count[i]);
             }
-
-            res.add(temp);
         }
-
-        if(strs[n - 1] != "NA"){
-            res.add(new ArrayList<>(Arrays.asList(strs[n - 1])));
-        }
-
-        return res;
-
-
+        return sb.toString();
     }
 
-    public boolean checkAnagram(String s1, String s2){
-        if(s1.length() != s2.length()) return false;
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> groups = new HashMap<>();
 
-        int[] words = new int[26];
-
-        for(char c : s1.toCharArray()){
-            words[c - 'a']++;
+        for (String s : strs) {
+            groups.computeIfAbsent(getSignature(s), k -> new ArrayList<>()).add(s);
         }
 
-        for(char c : s2.toCharArray()){
-            words[c - 'a']--;
-        }
+        result.addAll(groups.values());
 
-        for(int i = 0; i < 26; i++){
-            if(words[i] != 0) return false;
-        }
-
-        return true;
+        return result;
     }
 }
