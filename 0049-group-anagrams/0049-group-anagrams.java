@@ -1,50 +1,54 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        int size = strs.length;
+        
+        int n = strs.length;
 
         List<List<String>> res = new ArrayList<>();
 
-        for(int i = 0; i < size; i++){
-            String word = strs[i];
-            if(word == "N") continue;
-            int[] map = new int[26];
-            List<String> group = new ArrayList<>();
-            for(int k = 0; k < word.length(); k++){
-                map[word.charAt(k) - 'a']++;
-            }
-
-            group.add(word);
-
-            //loop through other strings to find anagram
-            for(int j = i + 1; j < size; j++){
-                String newWord = strs[j];
-                if(newWord == "N") continue;
-
-                if(newWord.length() != word.length()) continue;
-
-                int[] temp = Arrays.copyOf(map,26);
-
-                for(int l = 0; l < newWord.length(); l++){
-                    temp[newWord.charAt(l) - 'a']--;
-                }
-
-                boolean isAnag = true;
-                for(int l = 0; l < temp.length; l++){
-                    if(temp[l] != 0) isAnag = false;
-                }
-
-                if(isAnag){
-                    group.add(newWord);
-                    strs[j] = "N";
-                } 
+        for(int i = 0; i < n - 1; i++){
+            String s1 = strs[i];
+            if(s1 == "NA") continue;
+            List<String> temp = new ArrayList<>();
+            temp.add(s1);
+            for(int j = i + 1; j < n; j++){
                 
+                String s2 = strs[j];
+
+                if(s2 != "NA" && checkAnagram(s1, s2)){
+                    temp.add(s2);
+                    strs[j] = "NA";
+                } 
             }
 
-            res.add(group);
-
+            res.add(temp);
         }
 
+        if(strs[n - 1] != "NA"){
+            res.add(new ArrayList<>(Arrays.asList(strs[n - 1])));
+        }
 
         return res;
+
+
+    }
+
+    public boolean checkAnagram(String s1, String s2){
+        if(s1.length() != s2.length()) return false;
+
+        int[] words = new int[26];
+
+        for(char c : s1.toCharArray()){
+            words[c - 'a']++;
+        }
+
+        for(char c : s2.toCharArray()){
+            words[c - 'a']--;
+        }
+
+        for(int i = 0; i < 26; i++){
+            if(words[i] != 0) return false;
+        }
+
+        return true;
     }
 }
