@@ -2,30 +2,35 @@ class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
 
-        for(int i = 0; i< nums.length; i++){
-            if(map.containsKey(nums[i])){
-                map.put(nums[i], map.get(nums[i]) + 1);
-            }else{
-                map.put(nums[i], 1);
-            } 
+        for(int num : nums){
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
-        List<Map.Entry<Integer, Integer>> list = new LinkedList<Map.Entry<Integer, Integer>>(map.entrySet());
+        List<Integer>[] bucket = new ArrayList[nums.length + 1];
 
-        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>(){
-            public int compare(Map.Entry<Integer, Integer> m1, Map.Entry<Integer, Integer> m2){
-                return (m2.getValue()).compareTo(m1.getValue());
+        for(int key : map.keySet()){
+            int freq = map.get(key);
+
+            if(bucket[freq] == null){
+                bucket[freq] = new ArrayList<>();
             }
-        });
+
+            bucket[freq].add(key);
+        }
 
         int[] res = new int[k];
-        for(int i = 0; i < res.length; i++){
-            res[i] = list.get(i).getKey();
+        int index = 0;
+
+        for(int i = bucket.length - 1;  i>=0; i--){
+            if(bucket[i] != null){
+                for(int val : bucket[i]){
+                    res[index++] = val;
+                    if(index == k) return res;
+                }
+            }
         }
 
+
         return res;
-          
-
-
     }
 }
