@@ -6,10 +6,8 @@ class Solution {
         int min = prices[0];
 
         for(int i = 1; i < n; i++){
-            if(prices[i] > min){
-                int temp = prices[i] - min;
-
-                if(temp > profit) profit = temp;
+            if(prices[i] - min > profit){
+                profit = prices[i] - min;
             }else if(prices[i] < min){
                 min = prices[i];
             }
