@@ -1,33 +1,21 @@
 class Solution {
     public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<>();
+        Stack<Character> st = new Stack<>();
+        st.push(s.charAt(0));
 
-        if(s.charAt(0) == ')' || s.charAt(0) == ']' || s.charAt(0) == '}') return false;
-
-        int n = s.length();
-        for(int i = 0; i < n; i++){
+        for(int i = 1; i < s.length(); i++){
             char c = s.charAt(i);
-            if(c == '(' || c == '[' || c == '{'){
-                stack.push(c);
-            }else{
-                if(c == ')'){
-                    if(stack.isEmpty() || stack.peek() != '(') return false;
-                }
-
-                if(c == ']'){
-                    if(stack.isEmpty() || stack.peek() != '[') return false;
-                }
-
-                if(c == '}'){
-                    if(stack.isEmpty() || stack.peek() != '{') return false;
-                }
-
-                stack.pop();
-            }
+            if(c == ')' && st.peek() != '('){
+                return false;
+            } else if(c == ')' && st.peek() == '(') st.pop();
+            else if(c == '}' && st.peek() != '{') return false;
+            else if(c == '}' && st.peek() == '{') st.pop();
+            else if(c == ']' && st.peek() != '[') return false;
+            else if(c == ']' && st.peek() == '[') st.pop();
+            
+            else st.push(c);
         }
 
-        if(!stack.isEmpty()) return false;
-
-        return true;
+        return st.isEmpty();
     }
 }
