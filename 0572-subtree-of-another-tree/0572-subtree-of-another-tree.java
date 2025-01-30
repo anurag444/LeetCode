@@ -15,35 +15,44 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        if(root == null && subRoot == null) return true;
+        
+        Stack<TreeNode> s = new Stack<>();
+        TreeNode curr = root;
 
-        if(subRoot == null || root == null) return false;
+        while (curr != null || !s.isEmpty()) {
 
-        return findSubTree(root, subRoot);
-    }
+            // Reach the left most Node of the curr Node
+            while (curr != null) {
 
-    public boolean findSubTree(TreeNode root, TreeNode subRoot){
-        if(root == null) return false;
-
-        if(root.val == subRoot.val){
-            TreeNode temp = subRoot;
-            boolean isSubTree = checkSubTree(root, temp);
-            if(isSubTree == true){
-                return true;
+                // Place pointer to a tree node on
+                // the stack before traversing
+                // the node's left subtree
+                s.push(curr);
+                curr = curr.left;
             }
+
+            // Current must be NULL at this point
+            curr = s.pop();
+            boolean ans = isSameTree(curr, subRoot);
+            if(ans) return ans;
+
+            // we have visited the node and its
+            // left subtree. Now, it's right
+            // subtree's turn
+            curr = curr.right;
         }
 
-        return findSubTree(root.left, subRoot) || findSubTree(root.right, subRoot);
-
+        return false;
     }
 
-    public boolean checkSubTree(TreeNode root, TreeNode subRoot){
-        if(root == null && subRoot == null) return true;
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q == null) return true;
+        if(p == null || q == null) return false;
+        if(p.val != q.val) return false;
 
-        if(root == null || subRoot == null) return false;
+        boolean left = isSameTree(p.left, q.left);
+        boolean right = isSameTree(p.right, q.right);
 
-        if(root.val != subRoot.val) return false;
-
-        return checkSubTree(root.left, subRoot.left) && checkSubTree(root.right, subRoot.right);
+        return left && right;
     }
 }
