@@ -1,22 +1,22 @@
 class Solution {
     public int maxProduct(int[] nums) {
-        
         int n = nums.length;
-        int left = 1, right = 1;
+
+        int leftprod = 1;
+        int rightprod = 1;
         int max = nums[0];
-        
-        
+
         for(int i = 0; i < n; i++){
-            left = left == 0 ? 1 : left;
-            right = right == 0 ? 1 : right;
-            
-            left *= nums[i];
-            right *= nums[n - 1 - i];
-            
-            max = Math.max(max, Math.max(left, right));
+            leftprod = leftprod == 0 ? 1 : leftprod;
+            rightprod = rightprod == 0 ? 1 : rightprod;
+
+            leftprod *= nums[i];
+            rightprod *= nums[n - 1- i];
+
+
+            max = Math.max(max, Math.max(leftprod, rightprod));
         }
-            
-            return max;
-        
+
+        return max; 
     }
 }
