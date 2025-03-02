@@ -1,53 +1,61 @@
 class Solution {
     public String longestPalindrome(String s) {
-        String res = s.substring(0, 1);
-        int max = 1;
-
         int n = s.length();
+        int max = 0;
+        String res = "";
 
         for(int i = 1; i < n; i++){
-
+            //odd len
             int left = i - 1;
             int right = i + 1;
             int len = 1;
 
             while(left >= 0 && right < n){
                 if(s.charAt(left) == s.charAt(right)){
-                    len += 2;
+                    len = len + 2;
+
+                    left--;
+                    right++;
                 }
                 else{
                     break;
                 }
-
-                if(len > max){
-                    max = len;
-                    res = s.substring(left, right + 1);
-                }
-
-                left--;
-                right++;
             }
 
-            left = i - 1;
-            right = i;
+            left++;
+            right--;
+
+            if(right - left + 1> max){
+                max = right - left + 1;
+                res = s.substring(left, right + 1);
+            }
 
 
             //even len
-            while(s.charAt(left) == s.charAt(right)){
-                left--;
-                right++;
+            left = i - 1;
+            right = i;
+            len = 0;
 
-                if(left == -1 || right == n) break;
+            while(left >= 0 && right < n){
+                if(s.charAt(left) == s.charAt(right)){
+                    len = len + 2;
+
+                    left--;
+                    right++;
+                }
+                else{
+                    break;
+                }
             }
 
-            String str = s.substring(left + 1, right);
+            left++;
+            right--;
 
-            if(str.length() > max){
-                res = str;
-                max = str.length();
+            if(right - left + 1> max){
+                max = right - left + 1;
+                res = s.substring(left, right + 1);
             }
         }
-
 
         return res;
     }
