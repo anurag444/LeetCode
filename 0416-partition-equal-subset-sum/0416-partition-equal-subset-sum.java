@@ -1,29 +1,32 @@
 class Solution {
     public boolean canPartition(int[] nums) {
-        int total = Arrays.stream(nums).sum();
-        int target = total / 2;
-        if(total % 2 != 0) return false;
-        
-        return helperTab(nums, total);
-    }
-    
-     public boolean helperTab(int[] nums, int total){
-        Boolean[][] dp = new Boolean[nums.length + 1][total + 1];
-        for(Boolean[] row : dp) Arrays.fill(row, false);
+        int n = nums.length;
 
-        for(int i = 0; i <= nums.length; i++) dp[i][0] = true;
+        int amount = 0;
 
-        for(int index = nums.length - 1; index >= 0; index--){
-            for(int target = 0; target <= total / 2; target++){
-                boolean inc = false;
-                if(target - nums[index] >= 0)
-                    inc = dp[index + 1][target - nums[index]];
-                
-                boolean exc = dp[index + 1][target];
+        for(int val : nums){
+            amount += val;
+        }
 
-                dp[index][target] = (inc || exc);
+        if(amount % 2 != 0) return false;
+        amount /= 2;
+
+        boolean[][] dp = new boolean[n + 1][amount + 1];
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = true;
+        }
+
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= amount; j++){
+                if(j < nums[i - 1]){
+                    dp[i][j] = dp[i - 1][j];
+                }
+                else{
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]] ;
+                }
             }
         }
-        return dp[0][total / 2];
+
+        return dp[n][amount];
     }
 }
