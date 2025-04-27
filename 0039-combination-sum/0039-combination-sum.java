@@ -1,33 +1,27 @@
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
-        List<Integer> list = new ArrayList<>();
-        
-        helper(res, candidates, target, list, 0, candidates.length);
+
+        backtrack(res, new ArrayList<>(), candidates, 0, 0, target);
 
         return res;
     }
 
-    public void helper(List<List<Integer>> res, int[] candidates, int target, List<Integer> list,  int i, int n){
-        if(0 == target){
+    public void backtrack(List<List<Integer>> res, List<Integer> list, int[] nums, int idx, int sum, int target){
+        //add the temp to res, and we have to add by creating new list due to how java handles references
+        // by using new java will create a copy, if we not use it then everytime list is updated, it will
+        // be updated in the res as well.
+        if(sum == target){
             res.add(new ArrayList<>(list));
-            return;
         }
-        //base case
-        if(i >= n) return;
+        if(sum > target) return;
 
-        
+        for(int i = idx; i < nums.length; i++){
+            list.add(nums[i]);
 
-        if(target < 0) return;
+            backtrack(res, list, nums, i, sum + nums[i], target);
 
-        //we choose the number
-        list.add(candidates[i]);
-        helper(res, candidates, target - candidates[i], list, i, n);
-
-        list.remove(list.size() - 1);
-        //we dont choose the current val
-        helper(res, candidates, target, list, i + 1, n);
-
-        
+            list.remove(list.size() - 1);
+        } 
     }
 }
