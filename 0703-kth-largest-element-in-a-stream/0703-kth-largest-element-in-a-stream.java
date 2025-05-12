@@ -6,15 +6,8 @@ class KthLargest {
     public KthLargest(int k, int[] nums) {
         size = k;
         pq = new PriorityQueue<>(k);
-        for(int i = 0; i < Math.min(k, nums.length); i++){
-            pq.add(nums[i]);
-        }
-
-        for(int i = k; i < nums.length; i++){
-            if(nums[i] > pq.peek()){
-                pq.poll();
-                pq.add(nums[i]);
-            }
+        for(int i : nums){
+            this.add(i);
         }
     }
     
