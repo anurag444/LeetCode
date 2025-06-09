@@ -15,39 +15,18 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        
-        Stack<TreeNode> s = new Stack<>();
-        TreeNode curr = root;
+        if(root == null) return false;
 
-        while (curr != null || !s.isEmpty()) {
+        if(isSameTree(root, subRoot)) return true;
 
-            // Reach the left most Node of the curr Node
-            while (curr != null) {
-
-                // Place pointer to a tree node on
-                // the stack before traversing
-                // the node's left subtree
-                s.push(curr);
-                curr = curr.left;
-            }
-
-            // Current must be NULL at this point
-            curr = s.pop();
-            boolean ans = isSameTree(curr, subRoot);
-            if(ans) return ans;
-
-            // we have visited the node and its
-            // left subtree. Now, it's right
-            // subtree's turn
-            curr = curr.right;
-        }
-
-        return false;
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
     }
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
+        //base case
         if(p == null && q == null) return true;
         if(p == null || q == null) return false;
+
         if(p.val != q.val) return false;
 
         boolean left = isSameTree(p.left, q.left);
