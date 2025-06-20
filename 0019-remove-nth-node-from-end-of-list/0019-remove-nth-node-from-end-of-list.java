@@ -24,8 +24,9 @@ class Solution {
         len = len - n;
 
         curr = head;
-        for(int i = 1; i < len; i++){
+        while(len > 1){
             curr = curr.next;
+            len--;
         }
 
         
