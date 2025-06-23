@@ -1,24 +1,24 @@
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
-        //store the dict in set
+        int n = s.length();
 
-        Set<String> dict = new HashSet<>(wordDict);
-        int maxLen = 0;
-        //find max len of dict word
-        for(String word : dict){
-            maxLen = Math.max(maxLen, word.length());
+        int size = wordDict.size();
+        Set<String> set = new HashSet<>();
+
+        int max = 0;
+        for(String str: wordDict){
+            set.add(str);
+            max = Math.max(max, str.length());
         }
 
-        int n = s.length();
         boolean[] dp = new boolean[n + 1];
 
         dp[0] = true;
 
         for(int i = 1; i <= n; i++){
-            for(int j = i -1; j >= Math.max(0, i - maxLen); j--){
-                if(dp[j] && dict.contains(s.substring(j, i))){
+            for(int j = i - 1; j >= 0; j--){
+                if(dp[j] && set.contains(s.substring(j, i))){
                     dp[i] = true;
-                    break;
                 }
             }
         }
