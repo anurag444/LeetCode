@@ -20,25 +20,24 @@ class Solution {
         if(root == null) return res;
 
         Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
 
-        int nodesAtLevel = -1;
+        int count = 1;
+        q.add(root);
 
         while(!q.isEmpty()){
             List<Integer> list = new ArrayList<>();
-            nodesAtLevel = q.size();
-            
+            count = q.size();
 
-            while(nodesAtLevel != 0){
+            while(count != 0){
                 TreeNode node = q.poll();
+                count--;
                 list.add(node.val);
+
                 if(node.left != null) q.add(node.left);
                 if(node.right != null) q.add(node.right);
-                nodesAtLevel--;
             }
 
             res.add(list);
-
         }
 
         return res;
