@@ -1,56 +1,63 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int sLen = s.length();
-        int tLen = t.length();
+        // store all the freq of t
+        // iterate till matched 
+        // keep reducing from left till matched 
 
-        if (tLen > sLen) return "";
+        int m = s.length();
+        int n = t.length();
 
-        int[] targetFreq = new int[58]; // For ASCII 'A' (65) to 'z' (122)
+        int[] tFreq = new int[58];
 
-        for (int i = 0; i < tLen; i++) {
-            targetFreq[t.charAt(i) - 'A']++;
+        for(char c : t.toCharArray()){
+            tFreq[c - 'A']++;
         }
 
-        int[] windowFreq = new int[58];
-
-        int minWindowLength = Integer.MAX_VALUE;
-        int windowStart = 0; // Start index of the result substring
+        int min = Integer.MAX_VALUE;
         int left = 0;
-        int charsMatched = 0;
+        int[] windowFreq = new int[58];
+        int charCount = 0;
+        int windowStart = 0;
+        
 
-        for (int right = 0; right < sLen; right++) {
-            char rightChar = s.charAt(right);
-            int rIdx = rightChar - 'A';
-            windowFreq[rIdx]++;
+        for(int right = 0; right < m; right++){
 
-            // Count match only if this character is required and within limit
-            if (targetFreq[rIdx] > 0 && windowFreq[rIdx] <= targetFreq[rIdx]) {
-                charsMatched++;
+            char c = s.charAt(right);
+            int rightIndex = c - 'A';
+            windowFreq[rightIndex]++;
+
+            //we check if the char is in t and also make sure the freq is in range
+            if(tFreq[rightIndex] > 0 && windowFreq[rightIndex] <= tFreq[rightIndex]){
+                charCount++;
             }
 
-            // When all characters from t are matched
-            while (charsMatched == tLen) {
-                // Update result if smaller window found
-                if ((right - left + 1) < minWindowLength) {
-                    minWindowLength = right - left + 1;
+            while(charCount == n){
+                // we found the window that has all char in t, so update the min len and keep moving
+                // left till the condition is satisfied.
+
+                if(min > (right - left + 1)){
+                    min = (right - left + 1);
                     windowStart = left;
                 }
 
                 char leftChar = s.charAt(left);
-                int lIdx = leftChar - 'A';
-                windowFreq[lIdx]--;
+                int leftIndex = leftChar - 'A';
 
-                // If a required character is removed from window
-                if (targetFreq[lIdx] > 0 && windowFreq[lIdx] < targetFreq[lIdx]) {
-                    charsMatched--;
+                windowFreq[leftIndex]--;
+
+                //check if by moving left, did we remove the char in t
+                if(tFreq[leftIndex] > 0 && windowFreq[leftIndex] < tFreq[leftIndex]){
+                    charCount--;
                 }
 
+
                 left++;
+
             }
+
+
         }
 
-        return minWindowLength == Integer.MAX_VALUE
-            ? ""
-            : s.substring(windowStart, windowStart + minWindowLength);
+        return min == Integer.MAX_VALUE ? "" : s.substring(windowStart, windowStart + min);
     }
 }
