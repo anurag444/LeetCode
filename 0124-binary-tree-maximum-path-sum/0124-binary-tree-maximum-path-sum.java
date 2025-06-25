@@ -16,28 +16,28 @@
 class Solution {
     int max = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
-        maxSumHelper(root);
+        helper(root);
 
         return max;
     }
 
-    public int maxSumHelper(TreeNode root){
+    public int helper(TreeNode root){
+        //base case
         if(root == null) return 0;
 
-        int left = maxSumHelper(root.left);
-        int right = maxSumHelper(root.right);
-
-        int sum3 = Math.max(left + root.val, right + root.val);
+        int left = Math.max(0, helper(root.left));
+        int right = Math.max(0, helper(root.right));
 
 
-        int sum1 = Math.max(left + right + root.val, root.val);
+        int sum1 = Math.max(left + root.val, right + root.val);
+        int sum2 = Math.max(root.val, left + root.val + right);
 
-        int sum = Math.max(sum3, sum1);
+        int sum = Math.max(sum1, sum2);
 
-        if(sum > max){
-            max = sum;
-        }
+        max = Math.max(max, sum);
 
-        return Math.max(sum3, root.val);
+
+
+        return Math.max(left, right) + root.val;
     }
 }
