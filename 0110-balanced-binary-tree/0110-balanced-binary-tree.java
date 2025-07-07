@@ -16,24 +16,21 @@
 class Solution {
     boolean isBal = true;
     public boolean isBalanced(TreeNode root) {
-        if(root == null) return true;
+        helper(root);
 
-        getHeight(root);
-    
-        return isBal; 
+        return isBal;
     }
 
-    public int getHeight(TreeNode node){
-
+    public int helper(TreeNode node){
         if(node == null){
             return 0;
         }
 
-        int left = getHeight(node.left);
-        int right = getHeight(node.right);
+        int left = helper(node.left);
+        int right = helper(node.right);
 
         if(Math.abs(left - right) > 1) isBal = false;
 
-        return 1 + Math.max(left, right);
+        return Math.max(left, right) + 1;
     }
 }
